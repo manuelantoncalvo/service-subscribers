@@ -9,6 +9,7 @@ trait Validatable
     protected $rules = [];
     protected $errors = [];
     protected $messages = [];
+    protected $validation;
 
     public function addError($attribute, $msg)
     {
@@ -50,5 +51,14 @@ trait Validatable
     public function getMessage()
     {
         return $this->errors();
+    }
+
+    public function save(array $options = [])
+    {
+        $this->validate();
+        if ($this->isValid()) {
+            return parent::save($options);
+        }
+        return false;
     }
 }

@@ -3,9 +3,9 @@
 namespace App\Models\AbstractModel;
 
 use App\Traits\Validatable;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-abstract class Base extends Model
+abstract class BasePivot extends Pivot
 {
    use Validatable;
 }

@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,3 +15,9 @@ Route::get('/', function () {
     return response()->json('service-subscribers v1.0');
 });
 
+Route::get('/services', 'ServiceController@index');
+Route::get('/services/{id}', 'ServiceController@show');
+Route::get('/services/{id}/users', 'ServiceController@getUsers');
+Route::post('/services/{id}/users', 'ServiceController@addUser');
+Route::get('/services/{id}/users/{user_id}', 'ServiceController@getUser');
+Route::delete('/services/{id}/users/{user_id}', 'ServiceController@removeUser');

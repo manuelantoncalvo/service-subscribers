@@ -4,6 +4,11 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -46,6 +51,25 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        return parent::render($request, $exception);
+        $status = Response::HTTP_INTERNAL_SERVER_ERROR;
+
+        if(($exception instanceof ModelNotFoundException))
+        {
+            $status = Response::HTTP_NOT_FOUND;
+            $exception = new NotFoundHttpException('HTTP_NOT_FOUND', $exception);
+        }elseif ($exception instanceof MethodNotAllowedHttpException) {
+            $status = Response::HTTP_METHOD_NOT_ALLOWED;
+            $exception = new MethodNotAllowedHttpException([], 'HTTP_METHOD_NOT_ALLOWED', $exception);
+        }elseif ($exception instanceof NotFoundHttpException) {
+            $status = Response::HTTP_NOT_FOUND;
+            $exception = new NotFoundHttpException('HTTP_NOT_FOUND', $exception);
+        }elseif ($exception instanceof ValidationException){
+            if ($exception->response) {
+                return $exception->response;
+            }
+            return response()->json($exception->validator->errors()->getMessages(), 422);
+        }
+
+        return response()->json(['success' => false, 'status' => $status, 'message' => $exception->getMessage()], $status);
     }
 }
