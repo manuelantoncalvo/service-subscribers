@@ -2,17 +2,19 @@
 
 ## Database and seeds
 
-- Create a new database.
+- Create a new database and setup in .env file.
 - Run migrations and seeds with "php artisan migrate:fresh --seed".
 
 ## Endpoints
 
-- GET services list -> /services.
-- GET a service -> /services/{service_id}.
-- GET subscribers or users of service -> /services/{service_id}/users
-- POST create new subscription -> /services/{service_id}/users (param user_id is required in de body)
-- GET user related to the service -> /services/{service_id}/users/{user_id}
-- DELETE remove a user subscription -> /services/{service_id}/users/{user_id}
+| VERB | Description | URL |
+|----------|-------------|------|
+| GET | get services list | /services |
+| GET | get a service   | /services/{service_id} |
+| GET | get subscribers or users of service | /services/{service_id}/users |
+| POST | create new subscription (param user_id is required in body) | /services/{service_id}/users |
+| GET | get user related to the service | /services/{service_id}/users/{user_id} |
+| DELETE | remove a user subscription | /services/{service_id}/users/{user_id} |
 
 ## Report from Artisan command:
 
